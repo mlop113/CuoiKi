@@ -1,7 +1,7 @@
 package net.codejava.sound;
 
 import java.awt.Cursor;
-import java.awt.FlowLayout;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,34 +18,27 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.Timer;
+
 import java.awt.EventQueue;
 
 import javax.swing.JPanel;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
-
-import javax.media.*;
-
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
-import uk.co.caprica.vlcj.player.MediaPlayerFactory;
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import uk.co.caprica.vlcj.runtime.x.LibXUtil;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
+
 import java.awt.Color;
-import java.awt.Component;
+
 
 
 import javax.swing.JTable;
@@ -56,15 +49,17 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JSlider;
-import javax.swing.SwingConstants;
+
 import javax.swing.JToolBar;
-import javax.swing.JScrollBar;
-import javax.swing.JSplitPane;
-import javax.swing.Box;
+import java.awt.Component;
+
 
 
 public class MediaPanel1 extends javax.swing.JFrame {
-	//private SwingSoundRecorder recoder= new SwingSoundRecorder();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private SoundRecordingUtil recorder = new SoundRecordingUtil();
 	private AudioPlayer player1 = new AudioPlayer();
 	 private EmbeddedMediaPlayerComponent mediaplayer_demo;
@@ -88,14 +83,14 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	    DefaultTableModel model = new DefaultTableModel(data, cols);
 	    DefaultTableModel model1 = new DefaultTableModel(data1, cols);
 	    DefaultTableModel model2 = new DefaultTableModel(data2, cols);
-	    JTable table = new JTable(model);
+	    JTable table = new JTable(model)
+	    		{
+	    	public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+	    		};
 	    JButton button = new JButton("Add Notes");
 	    JTextField text = new JTextField(15);
-	     JTable table_1 = new JTable(model1) {
-	    	 public boolean isCellEditable(int row, int col) {
-	              return false;
-	          }
-	     };
 	     private javax.swing.JToolBar.Separator jSeparator1;
 	    private javax.swing.JButton btnPause;
 	    private javax.swing.JButton btnPlay;
@@ -130,7 +125,15 @@ public class MediaPanel1 extends javax.swing.JFrame {
 			}
 		});
 	}		
-	
+	public static String formatTime(long value) {
+        value /= 1000;
+        int hours = (int) value / 3600;
+        int remainder = (int) value - hours * 3600;
+        int minutes = remainder / 60;
+        remainder = remainder - minutes * 60;
+        int seconds = remainder;
+        return String.format("%d:%02d:%02d", hours, minutes, seconds);
+    }
 	       
 	public void actionPerformed(ActionEvent event) {
 		JButton button = (JButton) event.getSource();
@@ -319,10 +322,9 @@ public class MediaPanel1 extends javax.swing.JFrame {
         		};
      JPanel panel_addnotes = new JPanel();
      panel_addnotes.setBackground(Color.GRAY);
-      panel_addnotes.setBounds(427, 71, 347, 137);
+      panel_addnotes.setBounds(427, 353, 347, 137);
       frame.getContentPane().add(panel_addnotes);
       panel_addnotes.setLayout(new BorderLayout());
-      table.setEnabled(false);
       table.setBackground(Color.WHITE);
       table.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
       panel_addnotes.add(table, BorderLayout.NORTH);
@@ -352,16 +354,9 @@ public class MediaPanel1 extends javax.swing.JFrame {
       JPanel panel_recording = new JPanel();
       panel_recording.setBackground(Color.LIGHT_GRAY);
       panel_recording.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-      panel_recording.setBounds(427, 285, 347, 224);
+      panel_recording.setBounds(427, 64, 347, 224);
       frame.getContentPane().add(panel_recording);
       panel_recording.setLayout(new BorderLayout());
-    
-      
-      panel_recording.add(table_1, BorderLayout.NORTH);
-      
-      JLabel lblNewLabel = new JLabel("My  Record");
-      lblNewLabel.setBounds(457, 268, 106, 14);
-      frame.getContentPane().add(lblNewLabel);
       jSeparator1 = new javax.swing.JToolBar.Separator();
       JPanel panel_myvideo = new JPanel();
       panel_myvideo.setBackground(Color.LIGHT_GRAY);
@@ -383,7 +378,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
     		  
     		  int row=table.rowAtPoint(e.getPoint());
     		  int col= table.columnAtPoint(e.getPoint());
-    		  if(row ==0||col==1 )
+    		  if(row ==1  )
     		  {
     			  mediaplayer_demo.getMediaPlayer().playMedia("asas.mp4");    
                   sldVolumen.setValue(  mediaplayer_demo.getMediaPlayer().getVolume() );
@@ -496,7 +491,12 @@ public class MediaPanel1 extends javax.swing.JFrame {
 		 jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
 		panel_button.add(jPanel3, BorderLayout.NORTH);
 		
+		JLabel jLabeltime = new JLabel();
+		jLabeltime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jPanel3.add(jLabeltime);
+		
 		sldProgress = new javax.swing.JSlider();
+		sldProgress.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		jPanel3.add(sldProgress);
 		sldProgress.setMinimum(0);
         sldProgress.setMaximum(100);
@@ -539,6 +539,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
 				mediaplayer_demo.getMediaPlayer().stop();   
 	              sldProgress.setValue(0);
 	              sldProgress.setEnabled(true);
+	              jLabeltime.setText(formatTime(mediaplayer_demo.getMediaPlayer().getTime()));
 	              frame.setTitle("VLCJ Player");
 			}
 		});
@@ -552,7 +553,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	        sldVolumen.setMaximum(100);
 	        
 	        JToolBar toolBar = new JToolBar();
-	        toolBar.setBounds(0, 0, 804, 25);
+	        toolBar.setBounds(1, 4, 804, 25);
 	        frame.getContentPane().add(toolBar);
 	        JButton btnOpenFile = new JButton("Open File");
 	        btnOpenFile.addActionListener(new ActionListener() {
@@ -583,6 +584,14 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	        	}
 	        });
 	        toolBar.add(btnSnapshot);
+	        
+	        JLabel lblNewLabel = new JLabel("Notes");
+	        lblNewLabel.setBounds(429, 328, 46, 14);
+	        frame.getContentPane().add(lblNewLabel);
+	        
+	        JLabel lblNewLabel_1 = new JLabel("Subs");
+	        lblNewLabel_1.setBounds(429, 39, 46, 14);
+	        frame.getContentPane().add(lblNewLabel_1);
 		  
 		  
 	        sldVolumen.addChangeListener(new ChangeListener(){
@@ -599,6 +608,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	            public void positionChanged(MediaPlayer mp, float pos)
 	            {
 	                if(band){
+	                	jLabeltime.setText(formatTime(mediaplayer_demo.getMediaPlayer().getTime()));
 	                    int value = Math.min(100, Math.round(pos * 100.0f));            
 	                    sldProgress.setValue(value);                                                    
 	                }
