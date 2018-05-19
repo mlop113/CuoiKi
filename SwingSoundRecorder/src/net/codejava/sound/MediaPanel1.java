@@ -57,6 +57,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.JToolBar;
+import javax.swing.JScrollBar;
+import javax.swing.JSplitPane;
+import javax.swing.Box;
 
 
 public class MediaPanel1 extends javax.swing.JFrame {
@@ -87,7 +91,12 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	    JTable table = new JTable(model);
 	    JButton button = new JButton("Add Notes");
 	    JTextField text = new JTextField(15);
-	     JTable table_1 = new JTable(model1);
+	     JTable table_1 = new JTable(model1) {
+	    	 public boolean isCellEditable(int row, int col) {
+	              return false;
+	          }
+	     };
+	     private javax.swing.JToolBar.Separator jSeparator1;
 	    private javax.swing.JButton btnPause;
 	    private javax.swing.JButton btnPlay;
 	    private javax.swing.JSlider sldProgress;
@@ -302,7 +311,12 @@ public class MediaPanel1 extends javax.swing.JFrame {
       
       
        
-        JTable table_2 = new JTable( model2);     
+        JTable table_2 = new JTable( model2)
+        		{
+        	public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        		};
      JPanel panel_addnotes = new JPanel();
      panel_addnotes.setBackground(Color.GRAY);
       panel_addnotes.setBounds(427, 71, 347, 137);
@@ -348,7 +362,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
       JLabel lblNewLabel = new JLabel("My  Record");
       lblNewLabel.setBounds(457, 268, 106, 14);
       frame.getContentPane().add(lblNewLabel);
-      
+      jSeparator1 = new javax.swing.JToolBar.Separator();
       JPanel panel_myvideo = new JPanel();
       panel_myvideo.setBackground(Color.LIGHT_GRAY);
       panel_myvideo.setBounds(19, 460, 381, 87);
@@ -356,12 +370,27 @@ public class MediaPanel1 extends javax.swing.JFrame {
       panel_myvideo.setLayout(new BorderLayout());
       
       panel_myvideo.add(table_2, BorderLayout.NORTH);
-        
+       
       JLabel lblMyListVideo = new JLabel("My List Video");
-      lblMyListVideo.setBounds(41, 435, 76, 14);
+      lblMyListVideo.setBounds(19, 440, 76, 14);
       frame.getContentPane().add(lblMyListVideo);
-     
-      
+      table_2.addMouseListener(new java.awt.event.MouseAdapter()
+    		  {
+    	  
+    	  public void mouseClicked(java.awt.event.MouseEvent e)
+
+    	  {
+    		  
+    		  int row=table.rowAtPoint(e.getPoint());
+    		  int col= table.columnAtPoint(e.getPoint());
+    		  if(row ==0||col==1 )
+    		  {
+    			  mediaplayer_demo.getMediaPlayer().playMedia("asas.mp4");    
+                  sldVolumen.setValue(  mediaplayer_demo.getMediaPlayer().getVolume() );
+                  sldProgress.setEnabled(true);
+    		  }
+    	  }
+    		  });
       JButton btnNewButton_4 = new JButton("Open");
       btnNewButton_4.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent arg0) {
@@ -375,7 +404,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
              }
       	}
       });
-      btnNewButton_4.setBounds(113, 426, 70, 23);
+      btnNewButton_4.setBounds(100, 435, 70, 23);
       frame.getContentPane().add(btnNewButton_4);
       
       JPanel panel_button_record = new JPanel();
@@ -521,6 +550,39 @@ public class MediaPanel1 extends javax.swing.JFrame {
 		jPanel4.add(sldVolumen);
 		 sldVolumen.setMinimum(0);
 	        sldVolumen.setMaximum(100);
+	        
+	        JToolBar toolBar = new JToolBar();
+	        toolBar.setBounds(0, 0, 804, 25);
+	        frame.getContentPane().add(toolBar);
+	        JButton btnOpenFile = new JButton("Open File");
+	        btnOpenFile.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		JFileChooser fileChooser = new JFileChooser();
+	                FileNameExtensionFilter filter = new FileNameExtensionFilter("Videos", "mp4","flv","webm","3gp","dat");
+	                fileChooser.addChoosableFileFilter(filter);
+	                //fileChooser.setCurrentDirectory(new java.io.File("C:\\videos\\tmp\\"));
+	                if ( fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION ){            
+	                    file = fileChooser.getSelectedFile();                                     
+	                    btnPlay.doClick();
+	                }
+	        	}
+	        });
+	        toolBar.add(btnOpenFile);
+	        toolBar.add(jSeparator1);
+	        toolBar.setFloatable(false);
+	        toolBar.setRollover(true);
+	        JButton btnSnapshot = new JButton("Snap Shot");
+	        btnSnapshot.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		 if(file!=null){
+	                     String absolutePath = file.getAbsolutePath();        
+	                     String newPath = absolutePath .substring(0, absolutePath .length()-4) + "_" + System.currentTimeMillis() + ".png";                
+	                     if( mediaplayer_demo.getMediaPlayer().saveSnapshot(new File(newPath)) )               
+	                        JOptionPane.showMessageDialog(null, "Snapshot: " + newPath );  
+	                 }
+	        	}
+	        });
+	        toolBar.add(btnSnapshot);
 		  
 		  
 	        sldVolumen.addChangeListener(new ChangeListener(){
@@ -588,6 +650,4 @@ public class MediaPanel1 extends javax.swing.JFrame {
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setLocationRelativeTo(null);
 	}
-	
-	
 }
