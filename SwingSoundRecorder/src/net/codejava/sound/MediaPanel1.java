@@ -79,7 +79,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	 String[] cols = {"Col 1", "Col2"};
 	 	String[][]  data = {{"Time", "Description"},{"1:06", "How are you"},{"1:15","where are you from?"},{"2:20","Tell me about your life!"}};
 	 	String[][] data1 = {{"Time", "Title"},{"1:06", "Record_001"}};
-	 	String[][] data2 = {{"Name", "Time"},{"assa", "4:09"},{"Hello World", "10:37"},{"Internet","12:09"}};
+	 	String[][] data2 = {{"Name", "Time"},{"Học Tiếng Anh giao tiếp", "6:09"},{"Mẫu câu giao tiếp tiếng Anh", "6:37"},{"Tiếng Anh giao tiếp cơ bản","8:09"},{"Những câu tiếng Anh giao tiếp","6:24"}};
 	    DefaultTableModel model = new DefaultTableModel(data, cols);
 	    DefaultTableModel model1 = new DefaultTableModel(data1, cols);
 	    DefaultTableModel model2 = new DefaultTableModel(data2, cols);
@@ -132,7 +132,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
         int minutes = remainder / 60;
         remainder = remainder - minutes * 60;
         int seconds = remainder;
-        return String.format("%d:%02d:%02d", hours, minutes, seconds);
+        return String.format("%02d:%02d", minutes, seconds);
     }
 	       
 	public void actionPerformed(ActionEvent event) {
@@ -360,7 +360,7 @@ public class MediaPanel1 extends javax.swing.JFrame {
       jSeparator1 = new javax.swing.JToolBar.Separator();
       JPanel panel_myvideo = new JPanel();
       panel_myvideo.setBackground(Color.LIGHT_GRAY);
-      panel_myvideo.setBounds(19, 460, 381, 87);
+      panel_myvideo.setBounds(19, 460, 381, 80);
       frame.getContentPane().add(panel_myvideo);
       panel_myvideo.setLayout(new BorderLayout());
       
@@ -380,30 +380,33 @@ public class MediaPanel1 extends javax.swing.JFrame {
     		  int col= table.columnAtPoint(e.getPoint());
     		  if(row ==1  )
     		  {
-    			  mediaplayer_demo.getMediaPlayer().playMedia("asas.mp4");    
+    			  mediaplayer_demo.getMediaPlayer().playMedia("Học Tiếng Anh giao tiếp.mp4");    
                   sldVolumen.setValue(  mediaplayer_demo.getMediaPlayer().getVolume() );
                   sldProgress.setEnabled(true);
     		  }
-    	  }
+    		  if(row ==2  )
+    		  {
+    			  mediaplayer_demo.getMediaPlayer().playMedia("Mẫu câu giao tiếp tiếng Anh.mp4");    
+                  sldVolumen.setValue(  mediaplayer_demo.getMediaPlayer().getVolume() );
+                  sldProgress.setEnabled(true);
+    		  }
+    		  if(row ==3  )
+    		  {
+    			  mediaplayer_demo.getMediaPlayer().playMedia("Tiếng Anh giao tiếp cực ngắn.mp4");    
+                  sldVolumen.setValue(  mediaplayer_demo.getMediaPlayer().getVolume() );
+                  sldProgress.setEnabled(true);
+    		  }
+    		  if(row ==4  )
+    		  {
+    			  mediaplayer_demo.getMediaPlayer().playMedia("Tiếng Anh giao tiếp cực ngắn.mp4");    
+                  sldVolumen.setValue(  mediaplayer_demo.getMediaPlayer().getVolume() );
+                  sldProgress.setEnabled(true);
+    		  }
+    	  	}
     		  });
-      JButton btnNewButton_4 = new JButton("Open");
-      btnNewButton_4.addActionListener(new ActionListener() {
-      	public void actionPerformed(ActionEvent arg0) {
-      		 JFileChooser fileChooser = new JFileChooser();
-             FileNameExtensionFilter filter = new FileNameExtensionFilter("Videos", "mp4","flv","webm","3gp","dat");
-             fileChooser.addChoosableFileFilter(filter);
-             //fileChooser.setCurrentDirectory(new java.io.File("C:\\videos\\tmp\\"));
-             if ( fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION ){            
-                 file = fileChooser.getSelectedFile();                                     
-                 btnPlay.doClick();
-             }
-      	}
-      });
-      btnNewButton_4.setBounds(100, 435, 70, 23);
-      frame.getContentPane().add(btnNewButton_4);
       
       JPanel panel_button_record = new JPanel();
-      panel_button_record.setBounds(427, 512, 347, 35);
+      panel_button_record.setBounds(427, 501, 347, 35);
       frame.getContentPane().add(panel_button_record);
       panel_button_record.setLayout(null);
       buttonPlay.addActionListener(new ActionListener() {
@@ -468,12 +471,12 @@ public class MediaPanel1 extends javax.swing.JFrame {
 		
 		jPanel2.setLayout(new BorderLayout());
 		
-        //se añade reproductor 
+        //se aÃ±ade reproductor 
 		
 		 
 	        frame.getContentPane().add(jPanel2, BorderLayout.CENTER);
 	        mediaplayer_demo = new EmbeddedMediaPlayerComponent();
-	        //se añade reproductor 
+	        //se aÃ±ade reproductor 
 	        jPanel2.add(mediaplayer_demo);        
 	        mediaplayer_demo.setSize(jPanel2.getSize());                
 	        mediaplayer_demo.setVisible(true);          
