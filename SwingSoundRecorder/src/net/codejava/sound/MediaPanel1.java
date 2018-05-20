@@ -595,6 +595,14 @@ public class MediaPanel1 extends javax.swing.JFrame {
 	        JLabel lblNewLabel_1 = new JLabel("Subs");
 	        lblNewLabel_1.setBounds(429, 39, 46, 14);
 	        frame.getContentPane().add(lblNewLabel_1);
+	        
+	        JButton btnNewButton = new JButton("Add Subs");
+	        btnNewButton.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent arg0) {
+	        	}
+	        });
+	        btnNewButton.setBounds(460, 35, 89, 23);
+	        frame.getContentPane().add(btnNewButton);
 		  
 		  
 	        sldVolumen.addChangeListener(new ChangeListener(){
